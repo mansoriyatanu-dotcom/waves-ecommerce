@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Product Upload</title>
+
+<style>
+body{
+  background:#070503;
+  color:#ece7e0;
+  font-family:Arial;
+  padding:40px;
+}
+
+.container{
+  max-width:700px;
+  margin:auto;
+  background:#12100e;
+  padding:35px;
+  border-radius:25px;
+  border:1px solid #2e231c;
+}
+
+h1{
+  color:#ffbc6e;
+  text-align:center;
+  margin-bottom:25px;
+}
+
+.input{
+  width:100%;
+  padding:13px;
+  margin-bottom:14px;
+  border-radius:14px;
+  border:1px solid #2e231c;
+  background:#1a1410;
+  color:white;
+}
+
+textarea{
+  min-height:100px;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:40px;
+  background:#d97a2b;
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+#msg{
+  margin-top:20px;
+  text-align:center;
+  color:#ffbc6e;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Admin Product Upload</h1>
+
+<input id="id" class="input" placeholder="Product ID e.g. candle2">
+<input id="name" class="input" placeholder="Product Name">
+
+<textarea id="description" class="input" placeholder="Short Description"></textarea>
+<textarea id="details" class="input" placeholder="Long Product Details"></textarea>
+
+<input id="price" class="input" type="number" placeholder="Price">
+<input id="stock" class="input" type="number" placeholder="Stock">
+<input id="discount" class="input" placeholder="Discount">
+<input id="category" class="input" placeholder="Category: lamp / candle / custom / idols">
+
+<label>Main Image</label>
+<input id="imgFile" class="input" type="file">
+
+<label>Second Image</label>
+<input id="image2File" class="input" type="file">
+
+<label>Third Image</label>
+<input id="image3File" class="input" type="file">
+
+<input id="amazon" class="input" placeholder="Amazon Link">
+<input id="flipkart" class="input" placeholder="Flipkart Link">
+<input id="whatsapp" class="input" placeholder="WhatsApp Link">
+
+<button onclick="addProduct()">Upload Product</button>
+
+<div id="msg"></div>
+
+</div>
+
+<script>
+function showMsg(text){
+  document.getElementById("msg").innerText = text;
+}
+
+async function uploadImage(fileInputId){
+  const fileInput = document.getElementById(fileInputId);
+
+  if(!fileInput.files || fileInput.files.length === 0){
+    return "";
+  }
+
+  const formData = new FormData();
+  formData.append("image", fileInput.files[0]);
+
+  const res = await fetch("http://localhost:3000/api/upload", {
+    method: "POST",
+    headers: {
+      Authorization: localStorage.getItem("token")
+    },
+    body: formData
+  });
+
+  const data = await res.json();
+
+  if(data.error){
+    throw new Error(data.error);
+  }
+
+  return data.imageUrl;
+}
+
+async function addProduct(){
+
+  try{
+
+    showMsg("Uploading images...");
+
+    const token = localStorage.getItem("token");
+
+    if(!token){
+      showMsg("Please login as admin first");
+      return;
+    }
+
+    const img = await uploadImage("imgFile");
+    const image2 = await uploadImage("image2File");
+    const image3 = await uploadImage("image3File");
+
+    const data = {
+      id: document.getElementById("id").value,
+      name: document.getElementById("name").value,
+      description: document.getElementById("description").value,
+      details: document.getElementById("details").value,
+      price: document.getElementById("price").value,
+      stock: document.getElementById("stock").value,
+      discount: document.getElementById("discount").value,
+      category: document.getElementById("category").value,
+      img,
+      image2,
+      image3,
+      amazon: document.getElementById("amazon").value,
+      flipkart: document.getElementById("flipkart").value,
+      whatsapp: document.getElementById("whatsapp").value
+    };
+
+    if(!data.id || !data.name || !data.price || !data.category || !data.img){
+      showMsg("Fill Product ID, Name, Price, Category, and Main Image");
+      return;
+    }
+
+    showMsg("Saving product...");
+
+    const res = await fetch("http://localhost:3000/api/products", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token
+      },
+      body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+
+    if(result.error){
+      showMsg(result.error);
+      return;
+    }
+
+    showMsg("Product uploaded successfully ✅");
+
+  }catch(err){
+    showMsg("Upload failed: " + err.message);
+  }
+}
+</script>
+
+</body>
+</html>

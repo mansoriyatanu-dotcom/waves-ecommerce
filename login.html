@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Login - Waves</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      background:#070503;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-family:'Inter',sans-serif;
+      color:#ece7e0;
+      padding:20px;
+    }
+
+    .login-box{
+      width:100%;
+      max-width:420px;
+      background:#12100e;
+      border:1px solid #2e231c;
+      border-radius:30px;
+      padding:40px 30px;
+      box-shadow:0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .title{
+      text-align:center;
+      font-size:2.5rem;
+      margin-bottom:10px;
+      color:#ffbc6e;
+      font-family:'Playfair Display',serif;
+    }
+
+    .subtitle{
+      text-align:center;
+      color:#a3927e;
+      margin-bottom:30px;
+      font-size:0.9rem;
+    }
+
+    .input{
+      width:100%;
+      background:#1a1410;
+      border:1px solid #2e231c;
+      padding:14px 18px;
+      border-radius:16px;
+      margin-bottom:16px;
+      color:white;
+      font-size:0.95rem;
+      outline:none;
+    }
+
+    .input:focus{
+      border-color:#d97a2b;
+    }
+
+    .btn{
+      width:100%;
+      border:none;
+      padding:14px;
+      border-radius:50px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:1rem;
+      margin-top:10px;
+      transition:0.25s;
+    }
+
+    .login-btn{
+      background:#d97a2b;
+      color:black;
+    }
+
+    .signup-btn{
+      background:#1f1915;
+      color:#ece7e0;
+      border:1px solid #2e231c;
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+    }
+
+    .message{
+      margin-top:20px;
+      text-align:center;
+      color:#ffbc6e;
+      font-size:0.9rem;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="login-box">
+
+  <div class="title">
+    WAVES
+  </div>
+
+  <div class="subtitle">
+    Login or create your account
+  </div>
+
+  <input 
+    type="text"
+    id="username"
+    class="input"
+    placeholder="Username"
+  >
+
+  <input 
+    type="password"
+    id="password"
+    class="input"
+    placeholder="Password"
+  >
+
+  <button 
+    class="btn login-btn"
+    onclick="handleLogin()"
+  >
+    Login
+  </button>
+
+  <button 
+    class="btn signup-btn"
+    onclick="handleRegister()"
+  >
+    Create Account
+  </button>
+
+  <div class="message" id="message"></div>
+
+</div>
+
+<script src="api.js"></script>
+
+<script>
+
+async function handleLogin(){
+
+  const username =
+  document.getElementById('username').value;
+
+  const password =
+  document.getElementById('password').value;
+
+  if(!username || !password){
+
+    showMessage("Fill all fields");
+
+    return;
+  }
+
+  try{
+
+    const result =
+    await login(username,password);
+
+    if(result.error){
+
+      showMessage(result.error);
+
+      return;
+    }
+
+    showMessage("Login successful ✅");
+
+    setTimeout(()=>{
+
+      window.location.href = "index.html";
+
+    },1000);
+
+  }catch(err){
+
+    showMessage("Login failed");
+  }
+}
+
+async function handleRegister(){
+
+  const username =
+  document.getElementById('username').value;
+
+  const password =
+  document.getElementById('password').value;
+
+  if(!username || !password){
+
+    showMessage("Fill all fields");
+
+    return;
+  }
+
+  try{
+
+    const result =
+    await register(username,password);
+
+    if(result.error){
+
+      showMessage(result.error);
+
+      return;
+    }
+
+    showMessage("Account created ✅");
+
+    setTimeout(()=>{
+
+      window.location.href = "index.html";
+
+    },1000);
+
+  }catch(err){
+
+    showMessage("Registration failed");
+  }
+}
+
+function showMessage(msg){
+
+  document.getElementById('message')
+  .innerText = msg;
+}
+
+</script>
+
+</body>
+</html>

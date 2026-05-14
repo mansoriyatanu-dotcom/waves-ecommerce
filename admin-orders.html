@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Orders — Waves</title>
+
+<style>
+body {
+  background:#070503;
+  color:#ece7e0;
+  font-family:Arial;
+  padding:30px;
+}
+
+h1 {
+  color:#ffbc6e;
+}
+
+.order {
+  background:#12100e;
+  border:1px solid #2e231c;
+  padding:22px;
+  border-radius:20px;
+  margin-bottom:20px;
+}
+
+.order h3 {
+  color:#d97a2b;
+}
+
+.item {
+  color:#bcac9a;
+  margin-left:15px;
+}
+
+select {
+  padding:10px;
+  background:#1a1410;
+  color:white;
+  border:1px solid #d97a2b;
+  border-radius:10px;
+}
+
+button {
+  background:#d97a2b;
+  color:#070503;
+  border:none;
+  padding:10px 18px;
+  border-radius:30px;
+  cursor:pointer;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Admin Order Dashboard</h1>
+
+<div id="orders">Loading orders...</div>
+
+<script src="api.js"></script>
+
+<script>
+async function loadOrders() {
+  const token = getToken();
+
+  const res = await fetch("http://localhost:3000/api/admin/orders", {
+    headers: {
+      Authorization: token
+    }
+  });
+
+  const orders = await res.json();
+
+  const box = document.getElementById("orders");
+
+  if (orders.error) {
+    box.innerHTML = orders.error;
+    return;
+  }
+
+  if (orders.length === 0) {
+    box.innerHTML = "No orders yet.";
+    return;
+  }
+
+  box.innerHTML = "";
+
+  orders.forEach(order => {
+    const items = JSON.parse(order.items || "[]");
+
+    box.innerHTML += `
+      <div class="order">
+        <h3>Order #${order.id}</h3>
+
+        <p><b>Name:</b> ${order.customer_name}</p>
+        <p><b>Phone:</b> ${order.phone}</p>
+        <p><b>Email:</b> ${order.email || "N/A"}</p>
+        <p><b>Address:</b> ${order.address}, ${order.city}, ${order.state} - ${order.pincode}</p>
+        <p><b>Total:</b> ₹${order.total}</p>
+        <p><b>Date:</b> ${new Date(order.created_at).toLocaleString()}</p>
+
+        <h4>Products:</h4>
+        ${items.map(item => `
+          <div class="item">
+            • ${item.name} × ${item.quantity} = ₹${item.price * item.quantity}
+          </div>
+        `).join("")}
+
+        <br>
+
+        <select id="status-${order.id}">
+          <option ${order.status === "Pending" ? "selected" : ""}>Pending</option>
+          <option ${order.status === "Confirmed" ? "selected" : ""}>Confirmed</option>
+          <option ${order.status === "Shipped" ? "selected" : ""}>Shipped</option>
+          <option ${order.status === "Delivered" ? "selected" : ""}>Delivered</option>
+          <option ${order.status === "Cancelled" ? "selected" : ""}>Cancelled</option>
+        </select>
+
+        <button onclick="updateStatus(${order.id})">
+          Update
+        </button>
+      </div>
+    `;
+  });
+}
+
+async function updateStatus(id) {
+  const token = getToken();
+  const status = document.getElementById(`status-${id}`).value;
+
+  await fetch(`http://localhost:3000/api/admin/orders/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token
+    },
+    body: JSON.stringify({ status })
+  });
+
+  alert("Status updated");
+  loadOrders();
+}
+
+loadOrders();
+</script>
+
+</body>
+</html>

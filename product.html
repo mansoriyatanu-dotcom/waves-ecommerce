@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Product Details — Waves</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#070503;
+  color:#ece7e0;
+  font-family:'Inter',sans-serif;
+}
+
+.site-header{
+  background:#0c0907;
+  padding:18px 32px;
+  border-bottom:1px solid #2a221c;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:2rem;
+  font-family:'Playfair Display',serif;
+  background:linear-gradient(135deg,#ffbc6e,#d97a2b);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.nav-links{
+  display:flex;
+  gap:24px;
+}
+
+.nav-links a{
+  color:#ddd2c6;
+  text-decoration:none;
+}
+
+.product-layout{
+  max-width:1400px;
+  margin:50px auto;
+  padding:0 24px;
+  display:grid;
+  grid-template-columns:120px 1fr 420px;
+  gap:35px;
+}
+
+.thumb-column{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.thumb{
+  width:100%;
+  height:110px;
+  border-radius:18px;
+  overflow:hidden;
+  border:2px solid transparent;
+  cursor:pointer;
+  background:#12100e;
+}
+
+.thumb.active{
+  border-color:#d97a2b;
+}
+
+.thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.main-image{
+  background:#12100e;
+  border-radius:28px;
+  overflow:hidden;
+  height:650px;
+}
+
+.main-image{
+  position:relative;
+  cursor:zoom-in;
+}
+
+.main-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:0.35s ease;
+  transform-origin:center;
+}
+
+.main-image:hover img{
+  transform:scale(1.25);
+}
+
+.product-info{
+  background:#12100e;
+  border-radius:28px;
+  padding:35px;
+  border:1px solid #2a221c;
+  height:fit-content;
+  position:sticky;
+  top:30px;
+}
+
+.category{
+  color:#d97a2b;
+  font-size:0.85rem;
+  margin-bottom:10px;
+}
+
+.title{
+  font-size:2.5rem;
+  margin-bottom:14px;
+  font-family:'Playfair Display',serif;
+}
+
+.price{
+  font-size:2rem;
+  color:#ffbc6e;
+  font-weight:800;
+  margin:20px 0;
+}
+
+.stock{
+  margin-bottom:22px;
+  color:#7bd389;
+}
+
+.desc{
+  color:#bcac9a;
+  line-height:1.8;
+  margin-bottom:28px;
+}
+
+.qty{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:24px;
+}
+
+.qty button{
+  width:40px;
+  height:40px;
+  border:none;
+  border-radius:50%;
+  background:#1f1915;
+  color:white;
+  cursor:pointer;
+  font-size:1.1rem;
+}
+
+.qty span{
+  font-size:1.1rem;
+  font-weight:700;
+}
+
+.buy-btn{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:50px;
+  margin-bottom:14px;
+  font-weight:700;
+  cursor:pointer;
+  font-size:1rem;
+}
+
+.cart-btn{
+  background:#d97a2b;
+  color:#070503;
+}
+
+.whatsapp-btn{
+  background:#1f8b4c;
+  color:white;
+}
+
+.long-details{
+  max-width:1200px;
+  margin:60px auto;
+  padding:40px;
+  background:#0f0d0b;
+  border:1px solid #2a221c;
+  border-radius:30px;
+}
+
+.long-details h2{
+  color:#ffbc6e;
+  margin-bottom:24px;
+  font-size:2rem;
+}
+
+.long-details p{
+  color:#bcac9a;
+  line-height:2;
+  white-space:pre-line;
+}
+
+@media(max-width:1000px){
+
+  .product-layout{
+    grid-template-columns:1fr;
+  }
+
+  .thumb-column{
+    flex-direction:row;
+  }
+
+  .main-image{
+    height:450px;
+  }
+
+}
+</style>
+
+</head>
+
+<body>
+
+<header class="site-header">
+
+<div class="logo">
+WAVES
+</div>
+
+<div class="nav-links">
+<a href="index.html">Home</a>
+<a href="cart.html">Cart</a>
+</div>
+
+</header>
+
+<div class="product-layout">
+
+<div class="thumb-column" id="thumbs"></div>
+
+<div class="main-image">
+<img id="mainImg">
+</div>
+
+<div class="product-info">
+
+<div class="category" id="category"></div>
+
+<h1 class="title" id="title"></h1>
+
+<div class="price" id="price"></div>
+
+<div class="stock" id="stock"></div>
+
+<div class="desc" id="desc"></div>
+
+<div class="qty">
+
+<button onclick="changeQty(-1)">−</button>
+
+<span id="qty">1</span>
+
+<button onclick="changeQty(1)">+</button>
+
+</div>
+
+<button class="buy-btn cart-btn" onclick="addToCart()">
+🛒 Add To Cart
+</button>
+
+<button class="buy-btn whatsapp-btn" onclick="buyWhatsapp()">
+💬 Buy On WhatsApp
+</button>
+
+</div>
+
+</div>
+
+<div class="long-details">
+
+<h2>
+Product Details
+</h2>
+
+<p id="details"></p>
+
+</div>
+
+<script src="api.js"></script>
+
+<script>
+
+let product = null;
+let quantity = 1;
+
+const params =
+new URLSearchParams(window.location.search);
+
+const productId =
+params.get("id");
+
+async function loadProduct(){
+
+  const res =
+  await fetch(
+    `http://localhost:3000/api/products/${productId}`
+  );
+
+  product =
+  await res.json();
+
+  document.getElementById("title")
+  .innerText = product.name;
+
+  document.getElementById("category")
+  .innerText = product.category;
+
+  document.getElementById("price")
+  .innerText = "₹" + product.price;
+
+  document.getElementById("desc")
+  .innerText = product.description;
+
+  document.getElementById("details")
+  .innerText = product.details || "";
+
+  document.getElementById("stock")
+  .innerText =
+  Number(product.stock) > 0
+  ? "✅ In Stock"
+  : "❌ Out Of Stock";
+
+  const images = [
+    product.img,
+    product.image2,
+    product.image3
+  ].filter(Boolean);
+
+  document.getElementById("mainImg")
+  .src = images[0];
+
+  const thumbs =
+  document.getElementById("thumbs");
+
+  images.forEach((img,index)=>{
+
+    const div =
+    document.createElement("div");
+
+    div.className =
+    "thumb";
+
+    if(index===0){
+      div.classList.add("active");
+    }
+
+    div.innerHTML =
+    `<img src="${img}">`;
+
+    div.onclick = ()=>{
+
+      document.getElementById("mainImg")
+      .src = img;
+
+      document.querySelectorAll(".thumb")
+      .forEach(t=>t.classList.remove("active"));
+
+      div.classList.add("active");
+    };
+
+    thumbs.appendChild(div);
+  });
+}
+
+function changeQty(change){
+
+  quantity += change;
+
+  if(quantity < 1){
+    quantity = 1;
+  }
+
+  document.getElementById("qty")
+  .innerText = quantity;
+}
+
+async function addToCart(){
+
+  if(!getToken()){
+
+    window.location.href =
+    "login.html";
+
+    return;
+  }
+
+  const result =
+  await apiAddToCart(
+    product.id,
+    quantity
+  );
+
+  if(result.error){
+
+    alert(result.error);
+
+  }else{
+
+    alert("Added to cart ✅");
+  }
+}
+
+function buyWhatsapp(){
+
+  const msg =
+`🛍 Product Inquiry
+
+Product:
+${product.name}
+
+Quantity:
+${quantity}
+
+Price:
+₹${product.price}`;
+
+  window.open(
+    `https://wa.me/916263523736?text=${encodeURIComponent(msg)}`,
+    "_blank"
+  );
+}
+
+loadProduct();
+
+</script>
+
+</body>
+</html>

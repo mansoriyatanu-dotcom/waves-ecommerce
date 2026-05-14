@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Checkout — Waves</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      background:#070503;
+      color:#ece7e0;
+      font-family:'Inter',sans-serif;
+    }
+
+    .site-header{
+      background:rgba(7,5,3,0.96);
+      border-bottom:1px solid rgba(217,122,43,0.3);
+      padding:18px 32px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:20px;
+      position:sticky;
+      top:0;
+      z-index:100;
+    }
+
+    .logo{
+      font-family:'Playfair Display',serif;
+      font-size:2rem;
+      font-weight:700;
+      background:linear-gradient(135deg,#ffbc6e,#d97a2b);
+      -webkit-background-clip:text;
+      color:transparent;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:28px;
+      flex-wrap:wrap;
+    }
+
+    .nav-links a{
+      color:#ddd2c6;
+      text-decoration:none;
+      font-size:0.95rem;
+    }
+
+    .nav-links a:hover{
+      color:#d97a2b;
+    }
+
+    .page-header{
+      text-align:center;
+      padding:60px 20px 35px;
+      background:radial-gradient(circle at 30% 20%,#1f150e,#030201);
+      border-bottom:1px solid #2e231c;
+    }
+
+    .page-header h1{
+      font-family:'Playfair Display',serif;
+      font-size:3rem;
+      color:#ffbc6e;
+      margin-bottom:10px;
+    }
+
+    .page-header p{
+      color:#bcac9a;
+    }
+
+    .checkout-layout{
+      max-width:1200px;
+      margin:50px auto;
+      padding:0 24px 60px;
+      display:grid;
+      grid-template-columns:1fr 380px;
+      gap:35px;
+      align-items:start;
+    }
+
+    .form-box{
+      background:#0f0d0b;
+      border:1px solid #26201b;
+      border-radius:28px;
+      padding:32px;
+    }
+
+    .form-box h2{
+      color:#ffbc6e;
+      font-family:'Playfair Display',serif;
+      margin-bottom:24px;
+      font-size:1.8rem;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .full{
+      grid-column:1 / -1;
+    }
+
+    input,
+    textarea{
+      width:100%;
+      background:#1a1410;
+      border:1px solid #2e231c;
+      padding:14px 16px;
+      border-radius:16px;
+      color:white;
+      outline:none;
+      font-size:0.95rem;
+    }
+
+    textarea{
+      min-height:120px;
+      resize:vertical;
+    }
+
+    input:focus,
+    textarea:focus{
+      border-color:#d97a2b;
+    }
+
+    .summary{
+      background:#0c0a08;
+      border:1px solid #2a221c;
+      border-radius:28px;
+      padding:28px;
+      position:sticky;
+      top:100px;
+    }
+
+    .summary h2{
+      font-family:'Playfair Display',serif;
+      color:#ffbc6e;
+      font-size:1.6rem;
+      margin-bottom:24px;
+      border-bottom:1px solid #2e231c;
+      padding-bottom:12px;
+    }
+
+    .product-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+      color:#bcac9a;
+      font-size:0.92rem;
+    }
+
+    .total{
+      border-top:1px solid #2e231c;
+      padding-top:18px;
+      margin-top:20px;
+      display:flex;
+      justify-content:space-between;
+      color:#ffbc6e;
+      font-size:1.2rem;
+      font-weight:800;
+    }
+
+    .checkout-btn{
+      width:100%;
+      padding:15px;
+      border:none;
+      border-radius:50px;
+      background:#d97a2b;
+      color:#070503;
+      font-weight:800;
+      font-size:1rem;
+      cursor:pointer;
+      margin-top:24px;
+    }
+
+    .checkout-btn:hover{
+      filter:brightness(1.08);
+      transform:scale(0.99);
+    }
+
+    .empty{
+      text-align:center;
+      padding:80px 20px;
+      background:#0f0d0b;
+      border:1px solid #26201b;
+      border-radius:26px;
+      color:#a3927e;
+    }
+
+    footer{
+      background:#050302;
+      padding:30px;
+      border-top:1px solid #2a221c;
+      text-align:center;
+      color:#5e4e3e;
+      font-size:0.8rem;
+    }
+
+    @media(max-width:900px){
+
+      .checkout-layout{
+        grid-template-columns:1fr;
+      }
+
+      .summary{
+        position:static;
+      }
+
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<header class="site-header">
+
+  <div class="logo">
+    WAVES
+  </div>
+
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="cart.html">Cart</a>
+  </div>
+
+</header>
+
+<section class="page-header">
+
+  <h1>
+    Shipping Details
+  </h1>
+
+  <p>
+    Enter your address to complete the order
+  </p>
+
+</section>
+
+<main class="checkout-layout">
+
+  <section class="form-box">
+
+    <h2>
+      Shipping Address
+    </h2>
+
+    <div class="form-grid">
+
+      <div class="full">
+        <input type="text" id="name" placeholder="Full Name">
+      </div>
+
+      <div>
+        <input type="text" id="phone" placeholder="Phone Number">
+      </div>
+
+      <div>
+        <input type="email" id="email" placeholder="Email Address">
+      </div>
+
+      <div class="full">
+        <textarea id="address" placeholder="Full Address"></textarea>
+      </div>
+
+      <div>
+        <input type="text" id="city" placeholder="City">
+      </div>
+
+      <div>
+        <input type="text" id="state" placeholder="State">
+      </div>
+
+      <div>
+        <input type="text" id="pincode" placeholder="Pincode">
+      </div>
+
+    </div>
+
+  </section>
+
+  <aside class="summary">
+
+    <h2>
+      Order Summary
+    </h2>
+
+    <div id="summaryProducts"></div>
+
+    <div class="total">
+      <span>Total</span>
+      <span id="grandTotal">₹0</span>
+    </div>
+
+    <button class="checkout-btn" onclick="placeOrder()">
+      Place Order
+    </button>
+
+  </aside>
+
+</main>
+
+<footer>
+  © 2026 Waves Store — designed with warmth & intention
+</footer>
+
+<script src="api.js"></script>
+
+<script>
+
+let cartData = [];
+
+async function loadSummary(){
+
+  if(!getToken()){
+
+    window.location.href =
+    "login.html";
+
+    return;
+  }
+
+  const cart =
+  await apiGetCart();
+
+  cartData = cart;
+
+  const summary =
+  document.getElementById("summaryProducts");
+
+  let total = 0;
+
+  summary.innerHTML = "";
+
+  cart.forEach(item => {
+
+    const subtotal =
+    Number(item.price) *
+    Number(item.quantity);
+
+    total += subtotal;
+
+    summary.innerHTML += `
+
+      <div class="product-row">
+
+        <span>
+          ${item.name} × ${item.quantity}
+        </span>
+
+        <strong>
+          ₹${subtotal}
+        </strong>
+
+      </div>
+    `;
+  });
+
+  document.getElementById("grandTotal")
+  .innerText =
+  "₹" + total.toLocaleString("en-IN");
+}
+
+async function placeOrder(){
+
+  const name =
+  document.getElementById("name").value;
+
+  const phone =
+  document.getElementById("phone").value;
+
+  const email =
+  document.getElementById("email").value;
+
+  const address =
+  document.getElementById("address").value;
+
+  const city =
+  document.getElementById("city").value;
+
+  const state =
+  document.getElementById("state").value;
+
+  const pincode =
+  document.getElementById("pincode").value;
+
+  if(
+    !name ||
+    !phone ||
+    !address ||
+    !city ||
+    !state ||
+    !pincode
+  ){
+
+    alert("Please fill all required fields");
+
+    return;
+  }
+
+  let total = 0;
+
+  cartData.forEach(item => {
+
+    total +=
+    Number(item.price) *
+    Number(item.quantity);
+
+  });
+
+  // SAVE ORDER TO DATABASE
+
+  const orderData = {
+
+    customer_name:name,
+    phone,
+    email,
+    address,
+    city,
+    state,
+    pincode,
+    items:cartData,
+    total
+  };
+
+  try{
+
+    const res =
+    await fetch(
+      "http://localhost:3000/api/orders",
+      {
+
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json",
+          Authorization:getToken()
+        },
+
+        body:JSON.stringify(orderData)
+      }
+    );
+
+    const result =
+    await res.json();
+
+    if(result.error){
+
+      alert(result.error);
+
+      return;
+    }
+
+  }catch(err){
+
+    alert("Order save failed");
+
+    return;
+  }
+
+  // WHATSAPP MESSAGE
+
+  let message =
+`🛍 NEW WAVES ORDER
+
+👤 Name: ${name}
+📞 Phone: ${phone}
+📧 Email: ${email}
+
+📍 Address:
+${address}
+
+🏙 City: ${city}
+🗺 State: ${state}
+📮 Pincode: ${pincode}
+
+━━━━━━━━━━━━━━
+
+🧾 PRODUCTS:
+`;
+
+  cartData.forEach(item => {
+
+    const subtotal =
+    Number(item.price) *
+    Number(item.quantity);
+
+    message +=
+`\n• ${item.name} × ${item.quantity}
+= ₹${subtotal}`;
+  });
+
+  message += `
+
+━━━━━━━━━━━━━━
+
+💰 TOTAL: ₹${total}
+
+Please confirm my order.
+`;
+
+  const whatsappURL =
+  `https://wa.me/918319534537?text=${encodeURIComponent(message)}`;
+
+  // CLEAR LOCAL CART VIEW
+  alert("Order placed successfully ✅");
+
+  window.location.href =
+  whatsappURL;
+}
+
+loadSummary();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waves Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #070503;
+      font-family: 'Inter', sans-serif;
+      color: #ece7e0;
+    }
+    .site-header {
+      background: rgba(7, 5, 3, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(217, 122, 43, 0.3);
+      padding: 18px 32px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 2rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffbc6e, #d97a2b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .nav-links a {
+      color: #ddd2c6;
+      text-decoration: none;
+      margin-left: 28px;
+      font-weight: 500;
+    }
+    .nav-links a:hover { color: #d97a2b; }
+    .product-detail {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 50px;
+      max-width: 1300px;
+      margin: 60px auto;
+      padding: 0 30px;
+      align-items: center;
+    }
+    .product-img {
+      flex: 1;
+    }
+    .product-img img {
+      width: 100%;
+      border-radius: 32px;
+      box-shadow: 0 0 30px rgba(217, 122, 43, 0.4);
+    }
+    .product-info {
+      flex: 1;
+    }
+    .product-info h1 {
+      font-size: 2.8rem;
+      font-family: 'Playfair Display', serif;
+      color: #ffbc6e;
+      margin-bottom: 16px;
+    }
+    .price {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #e28d46;
+      margin: 20px 0;
+    }
+    .description {
+      color: #bcac9a;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .buy-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .btn {
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .btn-amazon { background: #d97a2b; color: #0a0806; }
+    .btn-flipkart { background: #2c6e8f; color: white; }
+    .btn-whatsapp { background: #1f8b4c; color: white; }
+    .btn:hover { transform: scale(0.97); filter: brightness(1.05); }
+    .back-link {
+      display: inline-block;
+      margin-top: 40px;
+      color: #d97a2b;
+      text-decoration: none;
+    }
+    footer {
+      background: #050302;
+      padding: 30px;
+      text-align: center;
+      margin-top: 60px;
+      font-size: 0.75rem;
+      color: #5e4e3e;
+      border-top: 1px solid #2a221c;
+    }
+    @media (max-width: 800px) {
+      .product-detail { flex-direction: column; }
+      .product-info h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="logo">WAVES</div>
+  <div class="nav-links"><a href="index.html">Home</a><a href="products.html">Shop</a><a href="index.html#contactFooter">Contact</a></div>
+</header>
+<div class="product-detail">
+  <div class="product-img"><img src="https://m.media-amazon.com/images/I/61poeqTEhKL._SL1500_.jpg" alt="Waves Brown Slatted Lamp" onerror="this.src='https://placehold.co/600x500/1f1915/d97a2b?text=Waves+Lamp'"></div>
+  <div class="product-info">
+    <h1>Waves Brown Slatted Lamp</h1>
+    <div class="price">₹1,499 <span style="font-size:1rem;">(63% off)</span></div>
+    <div class="description">Warm Glow, Tripod Base, Bedside Nightstand Light. Perfect for cozy evenings and stylish decor.</div>
+    <div class="buy-buttons">
+      <a href="https://amzn.in/d/09tcR9Ig" target="_blank" class="btn btn-amazon">🛒 Buy on Amazon</a>
+      <a href="https://dl.flipkart.com/s/w34HuUNNNN" target="_blank" class="btn btn-flipkart">📘 Buy on Flipkart</a>
+      <a href="https://wa.me/918319534537?text=I%20want%20to%20buy%20Waves%20Brown%20Slatted%20Lamp" target="_blank" class="btn btn-whatsapp">💬 Order on WhatsApp</a>
+    </div>
+    <a href="products.html" class="back-link">← back to all products</a>
+  </div>
+</div>
+<footer>© 2026 Waves Store — designed with warmth & intention</footer>
+</body>
+</html>

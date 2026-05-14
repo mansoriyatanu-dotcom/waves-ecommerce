@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Your Cart — Waves</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #070503;
+      color: #ece7e0;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    .site-header {
+      background: rgba(7, 5, 3, 0.96);
+      border-bottom: 1px solid rgba(217, 122, 43, 0.3);
+      padding: 18px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffbc6e, #d97a2b);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #ddd2c6;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: #d97a2b;
+    }
+
+    .page-header {
+      text-align: center;
+      padding: 60px 20px 35px;
+      background: radial-gradient(circle at 30% 20%, #1f150e, #030201);
+      border-bottom: 1px solid #2e231c;
+    }
+
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: #ffbc6e;
+      margin-bottom: 10px;
+    }
+
+    .page-header p {
+      color: #bcac9a;
+    }
+
+    .cart-layout {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 0 24px 40px;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 35px;
+      align-items: start;
+    }
+
+    .cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .cart-item {
+      background: #0f0d0b;
+      border: 1px solid #26201b;
+      border-radius: 26px;
+      padding: 20px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      transition: 0.25s;
+    }
+
+    .cart-item:hover {
+      border-color: #d97a2b;
+      box-shadow: 0 20px 35px -20px rgba(217, 122, 43, 0.35);
+    }
+
+    .cart-img {
+      width: 120px;
+      height: 120px;
+      background: #1c1713;
+      border-radius: 18px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .cart-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cart-info {
+      flex: 1;
+    }
+
+    .cart-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      color: #f2e2d2;
+      margin-bottom: 8px;
+    }
+
+    .cart-price {
+      color: #e28d46;
+      font-weight: 800;
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+    }
+
+    .qty-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .qty-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid #d97a2b;
+      background: #1a1410;
+      color: #ffbc6e;
+      font-size: 1.1rem;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .qty-num {
+      min-width: 28px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .remove-btn {
+      margin-top: 12px;
+      background: transparent;
+      color: #a66;
+      border: none;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .remove-btn:hover {
+      color: #ff6b6b;
+    }
+
+    .summary {
+      background: #0c0a08;
+      border: 1px solid #2a221c;
+      border-radius: 28px;
+      padding: 28px;
+      position: sticky;
+      top: 100px;
+    }
+
+    .summary h2 {
+      font-family: 'Playfair Display', serif;
+      color: #ffbc6e;
+      font-size: 1.6rem;
+      margin-bottom: 24px;
+      border-bottom: 1px solid #2e231c;
+      padding-bottom: 12px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      color: #bcac9a;
+      font-size: 0.95rem;
+    }
+
+    .summary-row strong {
+      color: #ece7e0;
+    }
+
+    .summary-total {
+      border-top: 1px solid #2e231c;
+      padding-top: 16px;
+      margin-top: 12px;
+      color: #e28d46;
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+
+    .checkout-btn,
+    .whatsapp-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 0.95rem;
+      margin-top: 14px;
+      text-align: center;
+      display: block;
+      text-decoration: none;
+    }
+
+    .checkout-btn {
+      background: #d97a2b;
+      color: #070503;
+    }
+
+    .whatsapp-btn {
+      background: #1f8b4c;
+      color: white;
+    }
+
+    .checkout-btn:hover,
+    .whatsapp-btn:hover {
+      filter: brightness(1.08);
+      transform: scale(0.98);
+    }
+
+    .empty {
+      text-align: center;
+      padding: 80px 20px;
+      background: #0f0d0b;
+      border: 1px solid #26201b;
+      border-radius: 26px;
+      color: #a3927e;
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+
+    .empty h2 {
+      font-family: 'Playfair Display', serif;
+      color: #ffbc6e;
+      margin-bottom: 12px;
+    }
+
+    .shop-btn {
+      display: inline-block;
+      margin-top: 24px;
+      background: #d97a2b;
+      color: #070503;
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-weight: 800;
+    }
+
+    .wishlist-section {
+      max-width: 1200px;
+      margin: 30px auto 70px;
+      padding: 0 24px;
+    }
+
+    .wishlist-section h2 {
+      color: #ffbc6e;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+    }
+
+    .wishlist-card {
+      background: #12100e;
+      border: 1px solid #2a221c;
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .wishlist-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .wishlist-info {
+      padding: 14px;
+    }
+
+    .wishlist-info h3 {
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+      color: #ffbc6e;
+    }
+
+    .wishlist-info p {
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      color: #e28d46;
+    }
+
+    .wishlist-btn {
+      width: 100%;
+      padding: 8px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      margin-bottom: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .view-btn {
+      background: #d97a2b;
+      color: #070503;
+    }
+
+    .remove-wish-btn {
+      background: #2a221c;
+      color: white;
+    }
+
+    footer {
+      background: #050302;
+      padding: 30px;
+      border-top: 1px solid #2a221c;
+      text-align: center;
+      color: #5e4e3e;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 900px) {
+      .cart-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .summary {
+        position: static;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .cart-img {
+        width: 100%;
+        height: 220px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="logo">WAVES</div>
+
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="index.html#products">Products</a>
+    <a href="index.html#categoriesSection">Categories</a>
+    <a href="cart.html">Cart</a>
+  </div>
+</header>
+
+<section class="page-header">
+  <h1>Your Cart</h1>
+  <p>Review your selected pieces before placing the order</p>
+</section>
+
+<main class="cart-layout">
+  <section class="cart-items" id="cartItems">
+    <div class="empty">Loading cart...</div>
+  </section>
+
+  <aside class="summary" id="summaryBox">
+    <h2>Order Summary</h2>
+
+    <div class="summary-row">
+      <span>Subtotal</span>
+      <strong id="subtotal">₹0</strong>
+    </div>
+
+    <div class="summary-row">
+      <span>Shipping</span>
+      <strong id="shipping">₹0</strong>
+    </div>
+
+    <div class="summary-row summary-total">
+      <span>Total</span>
+      <strong id="total">₹0</strong>
+    </div>
+
+    <button class="checkout-btn" onclick="checkout()">
+      Proceed to Checkout
+    </button>
+
+    <a class="whatsapp-btn" id="whatsappOrder" href="#" target="_blank">
+      Order on WhatsApp
+    </a>
+  </aside>
+</main>
+
+<section class="wishlist-section">
+  <h2>♡ Saved for Later</h2>
+  <div class="wishlist-grid" id="wishlistGrid"></div>
+</section>
+
+<footer>
+  © 2026 Waves Store — designed with warmth & intention
+</footer>
+
+<script src="api.js"></script>
+
+<script>
+  let currentCart = [];
+
+  async function loadCart() {
+    const cartItems = document.getElementById("cartItems");
+    const summaryBox = document.getElementById("summaryBox");
+
+    if (!getToken()) {
+      cartItems.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">🔐</div>
+          <h2>Please login first</h2>
+          <p>You need to login before viewing your cart.</p>
+          <a href="login.html" class="shop-btn">Login Now</a>
+        </div>
+      `;
+
+      summaryBox.style.display = "none";
+      return;
+    }
+
+    try {
+      const data = await apiGetCart();
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      currentCart = data;
+
+      if (!currentCart || currentCart.length === 0) {
+        cartItems.innerHTML = `
+          <div class="empty">
+            <div class="empty-icon">🛒</div>
+            <h2>Your cart is empty</h2>
+            <p>Add something beautiful from Waves Store.</p>
+            <a href="index.html#products" class="shop-btn">Continue Shopping</a>
+          </div>
+        `;
+
+        summaryBox.style.display = "none";
+        return;
+      }
+
+      summaryBox.style.display = "block";
+      renderCartItems();
+      updateSummary();
+
+    } catch (err) {
+      cartItems.innerHTML = `
+        <div class="empty">
+          <h2>Could not load cart</h2>
+          <p>${err.message}</p>
+        </div>
+      `;
+
+      summaryBox.style.display = "none";
+    }
+  }
+
+  function renderCartItems() {
+    const cartItems = document.getElementById("cartItems");
+
+    cartItems.innerHTML = "";
+
+    currentCart.forEach(item => {
+      cartItems.innerHTML += `
+        <div class="cart-item">
+          <div class="cart-img">
+            <img 
+              src="${item.img}" 
+              alt="${item.name}"
+              onerror="this.src='https://placehold.co/300x300/1f1915/d97a2b?text=Waves'"
+            >
+          </div>
+
+          <div class="cart-info">
+            <h3>${item.name}</h3>
+
+            <div class="cart-price">
+              ₹${Number(item.price).toLocaleString("en-IN")}
+            </div>
+
+            <div class="qty-row">
+              <button class="qty-btn" onclick="changeQty('${item.product_id}', ${item.quantity - 1})">−</button>
+              <span class="qty-num">${item.quantity}</span>
+              <button class="qty-btn" onclick="changeQty('${item.product_id}', ${item.quantity + 1})">+</button>
+            </div>
+
+            <button class="remove-btn" onclick="removeItem('${item.product_id}')">
+              ✕ Remove
+            </button>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  function updateSummary() {
+    let subtotal = 0;
+
+    currentCart.forEach(item => {
+      subtotal += Number(item.price) * Number(item.quantity);
+    });
+
+    const shipping = subtotal >= 499 ? 0 : 79;
+    const total = subtotal + shipping;
+
+    document.getElementById("subtotal").innerText =
+      "₹" + subtotal.toLocaleString("en-IN");
+
+    document.getElementById("shipping").innerText =
+      shipping === 0 ? "FREE" : "₹" + shipping;
+
+    document.getElementById("total").innerText =
+      "₹" + total.toLocaleString("en-IN");
+
+    const orderLines = currentCart.map(item => {
+      return `• ${item.name} x${item.quantity} = ₹${Number(item.price) * Number(item.quantity)}`;
+    }).join("%0A");
+
+    const msg = `Hi Waves Store,%0AI want to place this order:%0A${orderLines}%0A%0ATotal: ₹${total}%0APlease confirm availability.`;
+
+    document.getElementById("whatsappOrder").href =
+      `https://wa.me/916263523736?text=${msg}`;
+  }
+
+  async function changeQty(productId, qty) {
+    if (qty <= 0) {
+      removeItem(productId);
+      return;
+    }
+
+    await apiUpdateCart(productId, qty);
+    loadCart();
+  }
+
+  async function removeItem(productId) {
+    await apiUpdateCart(productId, 0);
+    loadCart();
+  }
+
+  function checkout() {
+    window.location.href = "checkout.html";
+  }
+
+  function loadWishlist() {
+    const grid = document.getElementById("wishlistGrid");
+    const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+    if (wishlist.length === 0) {
+      grid.innerHTML = "<p style='color:#7e6b58;'>No wishlist items yet.</p>";
+      return;
+    }
+
+    grid.innerHTML = "";
+
+    wishlist.forEach(item => {
+      grid.innerHTML += `
+        <div class="wishlist-card">
+          <img 
+            src="${item.img}"
+            onerror="this.src='https://placehold.co/300x300/1f1915/d97a2b?text=Waves'"
+          >
+
+          <div class="wishlist-info">
+            <h3>${item.name}</h3>
+            <p>₹${Number(item.price).toLocaleString("en-IN")}</p>
+
+            <button class="wishlist-btn view-btn" onclick="viewProduct('${item.id}')">
+              View Product
+            </button>
+            <button class="wishlist-btn view-btn" onclick="moveToCart('${item.id}')">
+  Move to Cart
+</button>
+
+            <button class="wishlist-btn remove-wish-btn" onclick="removeWishlist('${item.id}')">
+              Remove
+            </button>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  function viewProduct(id) {
+    window.location.href = "product.html?id=" + id;
+  }
+async function moveToCart(id) {
+  const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+  const item = wishlist.find(product => product.id === id);
+
+  if (!item) return;
+
+  if (!getToken()) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  await apiAddToCart(item.id, 1);
+
+  const updatedWishlist = wishlist.filter(product => product.id !== id);
+  localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+
+  loadCart();
+  loadWishlist();
+}
+  function removeWishlist(id) {
+    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+    wishlist = wishlist.filter(item => item.id !== id);
+
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+
+    loadWishlist();
+  }
+
+  loadCart();
+  loadWishlist();
+</script>
+
+</body>
+</html>
