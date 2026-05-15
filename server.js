@@ -10,8 +10,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
+//app.use(express.static("public"));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(express.static(__dirname));
 
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -82,8 +83,7 @@ app.post("/api/upload", requireAdmin, upload.single("image"), (req, res) => {
 
 // HOME
 app.get("/", (req, res) => {
-  //res.sendFile(__dirname + "/index.html");
-  res.sendFile(path.join(__dirname,"public","index.html"))
+  res.sendFile(__dirname + "/index.html");
 });
 
 // AUTH
@@ -494,7 +494,7 @@ app.put("/api/admin/orders/:id", requireAdmin, (req, res) => {
   );
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
