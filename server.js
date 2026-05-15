@@ -157,7 +157,7 @@ app.post("/api/login", (req, res) => {
 
 // PRODUCTS
 app.get("/api/products", (req, res) => {
-  db.query("SELECT * FROM products ORDER BY created_at DESC", (err, rows) => {
+  db.query("SELECT * FROM products", (err, rows) => {
     if (err) {
       console.log(err);
       return res.status(500).json({ error: "Failed to fetch products" });
