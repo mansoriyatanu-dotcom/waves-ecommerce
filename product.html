@@ -193,6 +193,16 @@ body{
   color:white;
 }
 
+.amazon-btn{
+  background:#ff9900;
+  color:#111;
+}
+
+.flipkart-btn{
+  background:#2874f0;
+  color:white;
+}
+
 .long-details{
   max-width:1200px;
   margin:60px auto;
@@ -284,6 +294,14 @@ WAVES
 
 <button class="buy-btn whatsapp-btn" onclick="buyWhatsapp()">
 💬 Buy On WhatsApp
+</button>
+
+<button class="buy-btn amazon-btn" onclick="buyAmazon()">
+🛒 Buy On Amazon
+</button>
+
+<button class="buy-btn flipkart-btn" onclick="buyFlipkart()">
+🛍 Buy On Flipkart
 </button>
 
 </div>
@@ -445,6 +463,22 @@ Price:
 }
 
 loadProduct();
+
+function buyAmazon(){
+
+  window.open(
+    product.amazon,
+    "_blank"
+  );
+}
+
+function buyFlipkart(){
+
+  window.open(
+    product.flipkart,
+    "_blank"
+  );
+}
 
 </script>
 
